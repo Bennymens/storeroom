@@ -133,230 +133,233 @@ export const NotificationDropdown = ({ isOpen, onClose, onNavigateTab }) => {
   if (!isOpen) return null;
 
   return (
-    <div
-      ref={dropdownRef}
-      style={{
-        position: 'absolute',
-        top: '64px',
-        right: '20px',
-        width: '380px',
-        maxWidth: 'calc(100vw - 32px)',
-        background: '#121215',
-        border: '1px solid #272730',
-        borderRadius: '16px',
-        boxShadow: '0 20px 50px rgba(0, 0, 0, 0.85)',
-        zIndex: 100,
-        display: 'flex',
-        flexDirection: 'column',
-        overflow: 'hidden',
-        animation: 'fadeIn 0.15s ease'
-      }}
-    >
-      {/* Header */}
-      <div style={{
-        padding: '1rem 1.25rem',
-        borderBottom: '1px solid #1c1c22',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        background: '#0e0e11'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
-          <Bell size={17} style={{ color: '#991b1b' }} />
-          <h4 style={{ fontSize: '0.95rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
-            Notifications
-          </h4>
-          {unreadCount > 0 && (
-            <span style={{
-              background: '#991b1b',
-              color: '#ffffff',
-              fontSize: '0.68rem',
-              fontWeight: 800,
-              padding: '0.1rem 0.45rem',
-              borderRadius: '999px'
-            }}>
-              {unreadCount} new
-            </span>
-          )}
-        </div>
+    <>
+      {/* Mobile Backdrop for Dropdown */}
+      <div
+        className="notif-backdrop-mobile"
+        onClick={onClose}
+      />
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          {unreadCount > 0 && (
+      <div
+        ref={dropdownRef}
+        className="notification-dropdown-card"
+      >
+        {/* Header */}
+        <div style={{
+          padding: '0.9rem 1.15rem',
+          borderBottom: '1px solid #1c1c22',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: '#0e0e11'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Bell size={17} style={{ color: '#991b1b' }} />
+            <h4 style={{ fontSize: '0.92rem', fontWeight: 800, color: '#ffffff', margin: 0 }}>
+              Notifications
+            </h4>
+            {unreadCount > 0 && (
+              <span style={{
+                background: '#991b1b',
+                color: '#ffffff',
+                fontSize: '0.68rem',
+                fontWeight: 800,
+                padding: '0.1rem 0.45rem',
+                borderRadius: '999px'
+              }}>
+                {unreadCount} new
+              </span>
+            )}
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            {unreadCount > 0 && (
+              <button
+                onClick={handleMarkAllAsRead}
+                style={{
+                  background: 'transparent',
+                  border: 'none',
+                  color: '#a1a1aa',
+                  fontSize: '0.75rem',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                  padding: '0.25rem 0.45rem',
+                  borderRadius: '6px'
+                }}
+                title="Mark all as read"
+              >
+                <Check size={13} />
+                <span>Mark read</span>
+              </button>
+            )}
             <button
-              onClick={handleMarkAllAsRead}
+              onClick={onClose}
               style={{
-                background: 'transparent',
-                border: 'none',
+                background: '#18181c',
+                border: '1px solid #272730',
                 color: '#a1a1aa',
-                fontSize: '0.75rem',
-                cursor: 'pointer',
-                fontWeight: 600,
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.25rem'
-              }}
-              title="Mark all as read"
-            >
-              <Check size={13} />
-              <span>Mark read</span>
-            </button>
-          )}
-          <button
-            onClick={onClose}
-            style={{
-              background: 'transparent',
-              border: 'none',
-              color: '#71717a',
-              cursor: 'pointer',
-              padding: '0.2rem'
-            }}
-          >
-            <X size={16} />
-          </button>
-        </div>
-      </div>
-
-      {/* Filter Tabs */}
-      <div style={{
-        display: 'flex',
-        gap: '0.35rem',
-        padding: '0.6rem 1.25rem',
-        background: '#121215',
-        borderBottom: '1px solid #1c1c22'
-      }}>
-        {[
-          { id: 'ALL', label: 'All' },
-          { id: 'ALERTS', label: 'Stock Alerts' },
-          { id: 'REQUESTS', label: 'Requisitions' }
-        ].map(t => (
-          <button
-            key={t.id}
-            onClick={() => setFilter(t.id)}
-            style={{
-              background: filter === t.id ? '#991b1b' : '#18181c',
-              color: filter === t.id ? '#ffffff' : '#a1a1aa',
-              border: filter === t.id ? '1px solid #991b1b' : '1px solid #272730',
-              borderRadius: '999px',
-              padding: '0.25rem 0.65rem',
-              fontSize: '0.75rem',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            {t.label}
-          </button>
-        ))}
-      </div>
-
-      {/* Notifications List */}
-      <div style={{
-        maxHeight: '340px',
-        overflowY: 'auto',
-        padding: '0.5rem',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '0.35rem'
-      }}>
-        {filteredNotifications.map(notif => {
-          const isRead = readIds.includes(notif.id);
-
-          let icon = <AlertTriangle size={15} style={{ color: '#fca5a5' }} />;
-          let iconBg = 'rgba(153, 27, 27, 0.2)';
-
-          if (notif.type === 'REQUEST') {
-            icon = <ClipboardList size={15} style={{ color: '#ffffff' }} />;
-            iconBg = '#1c1c22';
-          } else if (notif.type === 'OOS') {
-            icon = <XCircle size={15} style={{ color: '#f87171' }} />;
-            iconBg = '#991b1b';
-          } else if (notif.type === 'MOVEMENT') {
-            icon = <Package size={15} style={{ color: '#a1a1aa' }} />;
-            iconBg = '#1c1c22';
-          }
-
-          return (
-            <div
-              key={notif.id}
-              onClick={() => handleItemClick(notif)}
-              style={{
-                display: 'flex',
-                alignItems: 'flex-start',
-                gap: '0.75rem',
-                padding: '0.75rem',
-                borderRadius: '10px',
-                background: isRead ? '#141418' : '#1a1a20',
-                border: isRead ? '1px solid #1f1f26' : '1px solid #2d2d38',
-                cursor: 'pointer',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <div style={{
-                width: 30,
-                height: 30,
-                borderRadius: '8px',
-                background: iconBg,
+                borderRadius: '50%',
+                width: 28,
+                height: 28,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                {icon}
-              </div>
+                cursor: 'pointer'
+              }}
+            >
+              <X size={14} />
+            </button>
+          </div>
+        </div>
 
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{
+        {/* Filter Tabs */}
+        <div style={{
+          display: 'flex',
+          gap: '0.35rem',
+          padding: '0.55rem 1rem',
+          background: '#121215',
+          borderBottom: '1px solid #1c1c22',
+          overflowX: 'auto'
+        }}>
+          {[
+            { id: 'ALL', label: 'All' },
+            { id: 'ALERTS', label: 'Stock Alerts' },
+            { id: 'REQUESTS', label: 'Requisitions' }
+          ].map(t => (
+            <button
+              key={t.id}
+              onClick={() => setFilter(t.id)}
+              style={{
+                background: filter === t.id ? '#991b1b' : '#18181c',
+                color: filter === t.id ? '#ffffff' : '#a1a1aa',
+                border: filter === t.id ? '1px solid #991b1b' : '1px solid #272730',
+                borderRadius: '999px',
+                padding: '0.22rem 0.65rem',
+                fontSize: '0.72rem',
+                fontWeight: 700,
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Notifications List */}
+        <div style={{
+          maxHeight: '340px',
+          overflowY: 'auto',
+          padding: '0.5rem',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '0.35rem',
+          WebkitOverflowScrolling: 'touch'
+        }}>
+          {filteredNotifications.map(notif => {
+            const isRead = readIds.includes(notif.id);
+
+            let icon = <AlertTriangle size={15} style={{ color: '#fca5a5' }} />;
+            let iconBg = 'rgba(153, 27, 27, 0.2)';
+
+            if (notif.type === 'REQUEST') {
+              icon = <ClipboardList size={15} style={{ color: '#ffffff' }} />;
+              iconBg = '#1c1c22';
+            } else if (notif.type === 'OOS') {
+              icon = <XCircle size={15} style={{ color: '#f87171' }} />;
+              iconBg = '#991b1b';
+            } else if (notif.type === 'MOVEMENT') {
+              icon = <Package size={15} style={{ color: '#a1a1aa' }} />;
+              iconBg = '#1c1c22';
+            }
+
+            return (
+              <div
+                key={notif.id}
+                onClick={() => handleItemClick(notif)}
+                style={{
                   display: 'flex',
-                  justifyContent: 'space-between',
+                  alignItems: 'flex-start',
+                  gap: '0.7rem',
+                  padding: '0.7rem',
+                  borderRadius: '10px',
+                  background: isRead ? '#141418' : '#1a1a20',
+                  border: isRead ? '1px solid #1f1f26' : '1px solid #2d2d38',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                <div style={{
+                  width: 30,
+                  height: 30,
+                  borderRadius: '8px',
+                  background: iconBg,
+                  display: 'flex',
                   alignItems: 'center',
-                  marginBottom: '0.2rem'
+                  justifyContent: 'center',
+                  flexShrink: 0
                 }}>
-                  <span style={{
-                    fontSize: '0.82rem',
-                    fontWeight: isRead ? 600 : 800,
-                    color: '#ffffff'
-                  }}>
-                    {notif.title}
-                  </span>
-                  <span style={{ fontSize: '0.68rem', color: '#71717a' }}>
-                    {notif.timestamp}
-                  </span>
+                  {icon}
                 </div>
 
-                <p style={{
-                  fontSize: '0.75rem',
-                  color: isRead ? '#71717a' : '#a1a1aa',
-                  lineHeight: 1.35,
-                  margin: 0
-                }}>
-                  {notif.message}
-                </p>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: '0.2rem'
+                  }}>
+                    <span style={{
+                      fontSize: '0.8rem',
+                      fontWeight: isRead ? 600 : 800,
+                      color: '#ffffff'
+                    }}>
+                      {notif.title}
+                    </span>
+                    <span style={{ fontSize: '0.65rem', color: '#71717a' }}>
+                      {notif.timestamp}
+                    </span>
+                  </div>
+
+                  <p style={{
+                    fontSize: '0.73rem',
+                    color: isRead ? '#71717a' : '#a1a1aa',
+                    lineHeight: 1.35,
+                    margin: 0
+                  }}>
+                    {notif.message}
+                  </p>
+                </div>
+
+                <ChevronRight size={14} style={{ color: '#71717a', alignSelf: 'center', flexShrink: 0 }} />
               </div>
+            );
+          })}
 
-              <ChevronRight size={14} style={{ color: '#71717a', alignSelf: 'center', flexShrink: 0 }} />
+          {filteredNotifications.length === 0 && (
+            <div style={{ textAlign: 'center', padding: '2rem 1rem', color: '#71717a' }}>
+              <Bell size={24} style={{ margin: '0 auto 0.4rem', color: '#383844' }} />
+              <p style={{ fontSize: '0.8rem', margin: 0 }}>No notifications at this time.</p>
             </div>
-          );
-        })}
+          )}
+        </div>
 
-        {filteredNotifications.length === 0 && (
-          <div style={{ textAlign: 'center', padding: '2rem 1rem', color: '#71717a' }}>
-            <Bell size={24} style={{ margin: '0 auto 0.4rem', color: '#383844' }} />
-            <p style={{ fontSize: '0.8rem', margin: 0 }}>No notifications at this time.</p>
-          </div>
-        )}
+        {/* Footer */}
+        <div style={{
+          padding: '0.6rem 1rem',
+          borderTop: '1px solid #1c1c22',
+          background: '#0e0e11',
+          textAlign: 'center'
+        }}>
+          <span style={{ fontSize: '0.7rem', color: '#71717a' }}>
+            Real-Time Storeroom Notification Feed
+          </span>
+        </div>
       </div>
-
-      {/* Footer */}
-      <div style={{
-        padding: '0.65rem 1.25rem',
-        borderTop: '1px solid #1c1c22',
-        background: '#0e0e11',
-        textAlign: 'center'
-      }}>
-        <span style={{ fontSize: '0.72rem', color: '#71717a' }}>
-          Real-Time Storeroom Notification Feed
-        </span>
-      </div>
-    </div>
+    </>
   );
 };
