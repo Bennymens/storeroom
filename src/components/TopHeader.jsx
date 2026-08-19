@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Bell, ChevronDown } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react';
 import { useInventory } from '../context/InventoryContext';
 import { NotificationDropdown } from './NotificationDropdown';
 
-export const TopHeader = ({ title = 'Inventory Management', onNavigateTab }) => {
+export const TopHeader = ({ title = 'Inventory Management', onNavigateTab, onToggleMobileMenu }) => {
   const { items, requisitions } = useInventory();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
 
@@ -21,15 +21,15 @@ export const TopHeader = ({ title = 'Inventory Management', onNavigateTab }) => 
 
   return (
     <header className="top-header" style={{ position: 'relative' }}>
-      {/* Title & Subtitle */}
+      {/* Left: Title & Subtitle */}
       <div className="header-title-group">
         <h1>{title}</h1>
         <p>Today, {today}</p>
       </div>
 
-      {/* Header Actions */}
+      {/* Right Header Actions: Notification Bell + Hamburger Menu */}
       <div className="header-actions">
-        {/* Bell Notification Button (Interactive) */}
+        {/* Bell Notification Button */}
         <button
           className="bell-btn"
           title="Notifications & Alerts"
@@ -43,14 +43,14 @@ export const TopHeader = ({ title = 'Inventory Management', onNavigateTab }) => 
           {totalAlertCount > 0 && <span className="bell-dot" />}
         </button>
 
-        {/* User Profile Badge */}
-        <div className="user-profile">
-          <div className="user-avatar">
-            SC
-          </div>
-          <span className="user-name">Store Custodian</span>
-          <ChevronDown size={14} style={{ color: '#71717a' }} />
-        </div>
+        {/* Hamburger Toggle Button (Beside notification bell on the right) */}
+        <button
+          className="hamburger-btn"
+          onClick={onToggleMobileMenu}
+          title="Open menu"
+        >
+          <Menu size={20} />
+        </button>
       </div>
 
       {/* Popover Notification Dropdown */}

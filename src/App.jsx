@@ -29,13 +29,14 @@ function MainApp() {
     return 'user';
   });
 
-  // Admin Active Tab: 'inventory' (default like screenshot) | 'dashboard' | 'pickup' | 'requisitions' | 'movements' | 'analytics' | 'settings'
+  // Admin Active Tab: 'inventory' | 'dashboard' | 'pickup' | 'requisitions' | 'movements' | 'analytics' | 'settings'
   const [adminTab, setAdminTab] = useState('inventory');
 
   // User Active Tab: 'pickup' | 'status' | 'guide'
   const [userTab, setUserTab] = useState('pickup');
 
-  const [searchFilter, setSearchFilter] = useState('');
+  // Mobile Hamburger Drawer State
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Modals state
   const [isAddItemOpen, setIsAddItemOpen] = useState(false);
@@ -45,7 +46,7 @@ function MainApp() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [activeVoucher, setActiveVoucher] = useState(null);
 
-  // Sync with URL seamlessly without blocking PIN modal
+  // Sync with URL
   useEffect(() => {
     const handleUrlChange = () => {
       const path = window.location.pathname.toLowerCase();
@@ -55,6 +56,7 @@ function MainApp() {
       } else {
         setAppMode('user');
       }
+      setIsMobileMenuOpen(false);
     };
 
     window.addEventListener('popstate', handleUrlChange);
@@ -69,8 +71,8 @@ function MainApp() {
   const getHeaderTitle = () => {
     if (appMode === 'user') {
       if (userTab === 'status') return 'Requisition Status Tracker';
-      if (userTab === 'guide') return 'Storeroom Collection Guidelines';
-      return 'Pick & Request Storeroom Items';
+      if (userTab === 'guide') return 'Storeroom Guidelines';
+      return 'Pick & Request Items';
     }
 
     switch (adminTab) {
@@ -80,24 +82,34 @@ function MainApp() {
       case 'requisitions': return 'Requisitions & Gate Passes';
       case 'movements': return 'Stock Movements & Audit Log';
       case 'analytics': return 'Reports & Analysis';
-      case 'settings': return 'Storeroom Settings & Backups';
+      case 'settings': return 'Settings & Backups';
       default: return 'Inventory Management';
     }
   };
 
   return (
     <div className="app-wrapper">
+      {/* Mobile Drawer Overlay Backdrop */}
+      <div
+        className={`sidebar-backdrop ${isMobileMenuOpen ? 'active' : ''}`}
+        onClick={() => setIsMobileMenuOpen(false)}
+      />
+
       <div className="dashboard-shell">
         {/* SIDEBAR: Dedicated User Sidebar on '/' vs Admin Sidebar on '/admin' */}
         {appMode === 'user' ? (
           <SidebarUser
             userTab={userTab}
             setUserTab={setUserTab}
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
           />
         ) : (
           <SidebarAdmin
             activeTab={adminTab}
             setActiveTab={setAdminTab}
+            isOpen={isMobileMenuOpen}
+            onClose={() => setIsMobileMenuOpen(false)}
           />
         )}
 
@@ -105,6 +117,7 @@ function MainApp() {
         <div className="main-viewport">
           <TopHeader
             title={getHeaderTitle()}
+            onToggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             onNavigateTab={(tab) => {
               if (appMode === 'admin') setAdminTab(tab);
               else if (tab === 'requisitions') setUserTab('status');
@@ -171,10 +184,10 @@ function MainApp() {
                         className="btn-ui btn-primary-ui"
                         onClick={() => {
                           const data = {
-                            items: JSON.parse(localStorage.getItem('storehub_items_v2') || '[]'),
-                            categories: JSON.parse(localStorage.getItem('storehub_categories_v2') || '[]'),
-                            requisitions: JSON.parse(localStorage.getItem('storehub_requisitions_v2') || '[]'),
-                            movements: JSON.parse(localStorage.getItem('storehub_movements_v2') || '[]'),
+                            items: JSON.parse(localStorage.getItem('storehub_items_v4') || '[]'),
+                            categories: JSON.parse(localStorage.getItem('storehub_categories_v4') || '[]'),
+                            requisitions: JSON.parse(localStorage.getItem('storehub_requisitions_v4') || '[]'),
+                            movements: JSON.parse(localStorage.getItem('storehub_movements_v4') || '[]'),
                             exportedAt: new Date().toISOString()
                           };
                           const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });

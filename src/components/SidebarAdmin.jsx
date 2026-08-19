@@ -9,20 +9,26 @@ import {
   UserCheck,
   Download,
   Upload,
-  RotateCcw
+  RotateCcw,
+  X
 } from 'lucide-react';
 import { useInventory } from '../context/InventoryContext';
 
-export const SidebarAdmin = ({ activeTab, setActiveTab }) => {
+export const SidebarAdmin = ({ activeTab, setActiveTab, isOpen, onClose }) => {
   const { requisitions, resetToDefaultData, importBackupData, addToast } = useInventory();
   const pendingCount = requisitions.filter(r => r.status === 'Pending').length;
 
+  const handleNavClick = (tab) => {
+    setActiveTab(tab);
+    if (onClose) onClose();
+  };
+
   const handleExportBackup = () => {
     const data = {
-      items: JSON.parse(localStorage.getItem('storehub_items_v2') || '[]'),
-      categories: JSON.parse(localStorage.getItem('storehub_categories_v2') || '[]'),
-      requisitions: JSON.parse(localStorage.getItem('storehub_requisitions_v2') || '[]'),
-      movements: JSON.parse(localStorage.getItem('storehub_movements_v2') || '[]'),
+      items: JSON.parse(localStorage.getItem('storehub_items_v4') || '[]'),
+      categories: JSON.parse(localStorage.getItem('storehub_categories_v4') || '[]'),
+      requisitions: JSON.parse(localStorage.getItem('storehub_requisitions_v4') || '[]'),
+      movements: JSON.parse(localStorage.getItem('storehub_movements_v4') || '[]'),
       exportedAt: new Date().toISOString(),
       version: '2.0'
     };
@@ -53,24 +59,36 @@ export const SidebarAdmin = ({ activeTab, setActiveTab }) => {
   };
 
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isOpen ? 'mobile-open' : ''}`}>
       <div>
-        {/* Brand Orb (as seen in screenshot) */}
-        <div className="sidebar-brand" onClick={() => setActiveTab('inventory')}>
-          <div className="brand-orb">
-            <Boxes size={22} />
+        {/* Brand & Mobile Close Button */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
+          <div className="sidebar-brand" style={{ margin: 0 }} onClick={() => handleNavClick('inventory')}>
+            <div className="brand-orb">
+              <Boxes size={22} />
+            </div>
+            <div className="sidebar-brand-text">
+              <h2>StoreHub</h2>
+              <span>Storerooms</span>
+            </div>
           </div>
-          <div className="sidebar-brand-text">
-            <h2>StoreHub</h2>
-            <span>Storerooms</span>
-          </div>
+
+          {/* Close Button on Mobile Drawer */}
+          <button
+            onClick={onClose}
+            className="hamburger-btn"
+            style={{ display: isOpen ? 'flex' : undefined, width: 34, height: 34, marginRight: 0 }}
+            title="Close menu"
+          >
+            <X size={18} />
+          </button>
         </div>
 
         {/* Navigation Menu (Matching Screenshot) */}
         <nav className="sidebar-nav">
           <button
             className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
-            onClick={() => setActiveTab('dashboard')}
+            onClick={() => handleNavClick('dashboard')}
           >
             <LayoutDashboard size={18} />
             <span>Dashboard</span>
@@ -78,7 +96,7 @@ export const SidebarAdmin = ({ activeTab, setActiveTab }) => {
 
           <button
             className={`nav-item ${activeTab === 'inventory' ? 'active' : ''}`}
-            onClick={() => setActiveTab('inventory')}
+            onClick={() => handleNavClick('inventory')}
           >
             <Boxes size={18} />
             <span>Inventory</span>
@@ -86,7 +104,7 @@ export const SidebarAdmin = ({ activeTab, setActiveTab }) => {
 
           <button
             className={`nav-item ${activeTab === 'pickup' ? 'active' : ''}`}
-            onClick={() => setActiveTab('pickup')}
+            onClick={() => handleNavClick('pickup')}
           >
             <UserCheck size={18} />
             <span>Staff Pickup</span>
@@ -94,7 +112,7 @@ export const SidebarAdmin = ({ activeTab, setActiveTab }) => {
 
           <button
             className={`nav-item ${activeTab === 'requisitions' ? 'active' : ''}`}
-            onClick={() => setActiveTab('requisitions')}
+            onClick={() => handleNavClick('requisitions')}
           >
             <ClipboardList size={18} />
             <span>Requisitions</span>
@@ -103,7 +121,7 @@ export const SidebarAdmin = ({ activeTab, setActiveTab }) => {
 
           <button
             className={`nav-item ${activeTab === 'movements' ? 'active' : ''}`}
-            onClick={() => setActiveTab('movements')}
+            onClick={() => handleNavClick('movements')}
           >
             <History size={18} />
             <span>Audit Log</span>
@@ -111,7 +129,7 @@ export const SidebarAdmin = ({ activeTab, setActiveTab }) => {
 
           <button
             className={`nav-item ${activeTab === 'analytics' ? 'active' : ''}`}
-            onClick={() => setActiveTab('analytics')}
+            onClick={() => handleNavClick('analytics')}
           >
             <BarChart3 size={18} />
             <span>Reports &amp; Analysis</span>
@@ -119,7 +137,7 @@ export const SidebarAdmin = ({ activeTab, setActiveTab }) => {
 
           <button
             className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('settings')}
+            onClick={() => handleNavClick('settings')}
           >
             <Settings size={18} />
             <span>Settings</span>
