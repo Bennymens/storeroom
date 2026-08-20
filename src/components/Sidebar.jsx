@@ -11,6 +11,7 @@ import {
   Sparkles
 } from 'lucide-react';
 import { useInventory } from '../context/InventoryContext';
+import firstLoveLogo from '../assets/img/first_love_logo.png';
 
 export const Sidebar = ({ activeTab, setActiveTab, onOpenSettings }) => {
   const { requisitions } = useInventory();
@@ -21,8 +22,8 @@ export const Sidebar = ({ activeTab, setActiveTab, onOpenSettings }) => {
       <div>
         {/* Brand Orb (as seen in screenshot) */}
         <div className="sidebar-brand" onClick={() => setActiveTab('inventory')}>
-          <div className="brand-orb">
-            <Boxes size={22} />
+          <div className="brand-orb" style={{ background: 'transparent', padding: 0, boxShadow: 'none' }}>
+            <img src={firstLoveLogo} alt="First Love Church" style={{ width: 38, height: 38, objectFit: 'contain' }} />
           </div>
           <div className="sidebar-brand-text">
             <h2>StoreHub</h2>

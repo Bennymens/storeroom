@@ -1,5 +1,6 @@
 import React from 'react';
-import { X, Printer, Boxes } from 'lucide-react';
+import { X, Printer } from 'lucide-react';
+import firstLoveLogo from '../assets/img/first_love_logo.png';
 
 export const RequisitionVoucherModal = ({ isOpen, onClose, requisition }) => {
   if (!isOpen || !requisition) return null;
@@ -33,9 +34,7 @@ export const RequisitionVoucherModal = ({ isOpen, onClose, requisition }) => {
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', borderBottom: '2px solid #000000', paddingBottom: '1rem', marginBottom: '1.5rem' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                <div style={{ width: 26, height: 26, background: '#000', borderRadius: '4px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff' }}>
-                  <Boxes size={16} />
-                </div>
+                <img src={firstLoveLogo} alt="First Love Church" style={{ width: 48, height: 48, objectFit: 'contain' }} />
                 <h1 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#000' }}>
                   STOREHUB INVENTORY SYSTEM
                 </h1>

@@ -7,6 +7,7 @@ import {
   X
 } from 'lucide-react';
 import { useInventory } from '../context/InventoryContext';
+import firstLoveLogo from '../assets/img/first_love_logo.png';
 
 export const SidebarUser = ({ userTab, setUserTab, isOpen, onClose }) => {
   const { requisitions } = useInventory();
@@ -23,8 +24,8 @@ export const SidebarUser = ({ userTab, setUserTab, isOpen, onClose }) => {
         {/* Brand & Mobile Close Button */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem' }}>
           <div className="sidebar-brand" style={{ margin: 0 }} onClick={() => handleNavClick('pickup')}>
-            <div className="brand-orb">
-              <Boxes size={22} />
+            <div className="brand-orb" style={{ background: 'transparent', padding: 0, boxShadow: 'none' }}>
+              <img src={firstLoveLogo} alt="First Love Church" style={{ width: 38, height: 38, objectFit: 'contain' }} />
             </div>
             <div className="sidebar-brand-text">
               <h2>StoreHub</h2>

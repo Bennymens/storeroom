@@ -12,6 +12,7 @@ import {
   Lock
 } from 'lucide-react';
 import { useInventory } from '../context/InventoryContext';
+import firstLoveLogo from '../assets/img/first_love_logo.png';
 
 export const Navbar = ({
   activeTab,
@@ -66,8 +67,8 @@ export const Navbar = ({
         <div className="navbar-inner">
           {/* Brand */}
           <div className="nav-brand">
-            <div className="nav-brand-logo">
-              <Boxes size={20} />
+            <div className="nav-brand-logo" style={{ background: 'transparent', padding: 0 }}>
+              <img src={firstLoveLogo} alt="First Love Church" style={{ width: 36, height: 36, objectFit: 'contain' }} />
             </div>
             <div className="nav-brand-text">
               <h1>StoreHub</h1>
