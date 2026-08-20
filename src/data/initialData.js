@@ -474,40 +474,7 @@ export const INITIAL_ITEMS = [
   }
 ];
 
-export const INITIAL_REQUISITIONS = [
-  {
-    id: 'REQ-2026-001',
-    requestorName: 'Pastor David Mensah',
-    department: 'Youth & Campus Ministry',
-    phone: '+233 24 555 0192',
-    purpose: 'Youth Camp & Outreach Meeting',
-    dateNeeded: '2026-08-22',
-    priority: 'High',
-    status: 'Approved',
-    createdAt: '2026-08-15T09:30:00Z',
-    approvedBy: 'Auditorium Custodian',
-    notes: 'Dispensed for Friday worship service',
-    items: [
-      { itemId: 'aud-20', itemName: 'Green "My Children Make Me Glad" Wristbands', storeroomId: 'aud', quantityRequested: 30, unit: 'pieces' }
-    ]
-  },
-  {
-    id: 'REQ-2026-002',
-    requestorName: 'Sister Grace Osei',
-    department: 'Protocol & Ushers',
-    phone: '+233 50 123 4567',
-    purpose: 'Sunday All-Nations Communion Service',
-    dateNeeded: '2026-08-24',
-    priority: 'High',
-    status: 'Pending',
-    createdAt: '2026-08-16T14:15:00Z',
-    approvedBy: null,
-    notes: 'Please ensure cups are fresh and sealed.',
-    items: [
-      { itemId: 'aud-10', itemName: 'Communion Drinks and Wafers', storeroomId: 'aud', quantityRequested: 200, unit: 'cups' }
-    ]
-  }
-];
+export const INITIAL_REQUISITIONS = [];
 
 export const INITIAL_MOVEMENTS = [
   {

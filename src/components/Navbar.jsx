@@ -26,10 +26,10 @@ export const Navbar = ({
 
   const handleExportBackup = () => {
     const data = {
-      items: JSON.parse(localStorage.getItem('storehub_items_v2') || '[]'),
-      categories: JSON.parse(localStorage.getItem('storehub_categories_v2') || '[]'),
-      requisitions: JSON.parse(localStorage.getItem('storehub_requisitions_v2') || '[]'),
-      movements: JSON.parse(localStorage.getItem('storehub_movements_v2') || '[]'),
+      items: JSON.parse(localStorage.getItem('storehub_items_v4') || '[]'),
+      categories: JSON.parse(localStorage.getItem('storehub_categories_v4') || '[]'),
+      requisitions: JSON.parse(localStorage.getItem('storehub_requisitions_v4') || '[]'),
+      movements: JSON.parse(localStorage.getItem('storehub_movements_v4') || '[]'),
       exportedAt: new Date().toISOString(),
       version: '2.0'
     };

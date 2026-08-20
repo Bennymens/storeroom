@@ -8,12 +8,13 @@ import {
   Plus,
   Boxes,
   Clock,
-  CheckCircle2
+  CheckCircle2,
+  Trash2
 } from 'lucide-react';
 import { useInventory } from '../context/InventoryContext';
 
 export const RequisitionHub = ({ onOpenCart, onOpenVoucher }) => {
-  const { requisitions, updateRequisitionStatus, fulfillRequisition } = useInventory();
+  const { requisitions, updateRequisitionStatus, fulfillRequisition, deleteRequisition, clearAllRequisitions } = useInventory();
   const [statusFilter, setStatusFilter] = useState('ALL');
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -63,6 +64,21 @@ export const RequisitionHub = ({ onOpenCart, onOpenVoucher }) => {
             <option value="Approved">Approved ({requisitions.filter(r => r.status === 'Approved').length})</option>
             <option value="Fulfilled">Fulfilled ({requisitions.filter(r => r.status === 'Fulfilled').length})</option>
           </select>
+
+          {requisitions.length > 0 && (
+            <button
+              className="btn-ui btn-secondary-ui"
+              style={{ borderRadius: '999px', color: '#fca5a5', borderColor: '#7f1d1d' }}
+              onClick={() => {
+                if (window.confirm('Clear all requisition requests? This cannot be undone.')) {
+                  clearAllRequisitions();
+                }
+              }}
+            >
+              <Trash2 size={15} />
+              <span>Clear All</span>
+            </button>
+          )}
 
           <button className="btn-ui btn-primary-ui" style={{ borderRadius: '999px' }} onClick={onOpenCart}>
             <Plus size={15} />
@@ -137,6 +153,20 @@ export const RequisitionHub = ({ onOpenCart, onOpenVoucher }) => {
                       <span>Fulfill &amp; Issue</span>
                     </button>
                   )}
+
+                  <button
+                    className="btn-ui btn-secondary-ui"
+                    style={{ padding: '0.4rem 0.85rem', fontSize: '0.8rem', color: '#fca5a5', borderColor: '#5f1d1d' }}
+                    onClick={() => {
+                      if (window.confirm(`Delete requisition #${req.id}?`)) {
+                        deleteRequisition(req.id);
+                      }
+                    }}
+                    title="Delete Requisition"
+                  >
+                    <Trash2 size={14} />
+                    <span>Delete</span>
+                  </button>
                 </div>
               </div>
 

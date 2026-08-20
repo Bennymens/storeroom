@@ -45,7 +45,10 @@ export const InventoryProvider = ({ children }) => {
   const [requisitions, setRequisitions] = useState(() => {
     try {
       const saved = localStorage.getItem(STORAGE_KEYS.REQUISITIONS);
-      if (saved) return JSON.parse(saved);
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        return parsed.filter(r => r.id !== 'REQ-2026-001' && r.id !== 'REQ-2026-002');
+      }
     } catch (e) {
       console.error('Failed to load requisitions:', e);
     }
@@ -548,6 +551,17 @@ export const InventoryProvider = ({ children }) => {
     }
   };
 
+  const deleteRequisition = (reqId) => {
+    setRequisitions(prev => prev.filter(r => r.id !== reqId));
+    addToast(`Requisition #${reqId} removed`, 'info');
+  };
+
+  const clearAllRequisitions = () => {
+    setRequisitions([]);
+    localStorage.removeItem(STORAGE_KEYS.REQUISITIONS);
+    addToast('All requisitions cleared.', 'info');
+  };
+
   return (
     <InventoryContext.Provider
       value={{
@@ -575,6 +589,8 @@ export const InventoryProvider = ({ children }) => {
         createRequisition,
         updateRequisitionStatus,
         fulfillRequisition,
+        deleteRequisition,
+        clearAllRequisitions,
         resetToDefaultData,
         importBackupData,
         addToast,
