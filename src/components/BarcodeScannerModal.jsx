@@ -46,7 +46,7 @@ export const BarcodeScannerModal = ({ isOpen, onClose, onSelectItem, onOpenAdjus
             </div>
             <div>
               <h3 style={{ fontSize: '1.15rem', fontWeight: 800 }}>Barcode & QR Scanner / Labels</h3>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>StoreHub Digital Barcode System</span>
+              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>FL Inventory Digital Barcode System</span>
             </div>
           </div>
 
@@ -257,7 +257,7 @@ export const BarcodeScannerModal = ({ isOpen, onClose, onSelectItem, onOpenAdjus
                   >
                     <div>
                       <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.65rem', fontWeight: 800, color: '#475569', borderBottom: '1px solid #e2e8f0', paddingBottom: '0.25rem', marginBottom: '0.35rem' }}>
-                        <span>STOREHUB</span>
+                        <span>FL INVENTORY</span>
                         <span>{item.storeroomId.toUpperCase()}</span>
                       </div>
                       <div style={{ fontWeight: 800, fontSize: '0.9rem', lineHeight: 1.2, marginBottom: '0.25rem', color: '#0f172a' }}>

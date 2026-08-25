@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import {
   Lock,
+  ShieldCheck,
   KeyRound,
   AlertCircle,
   X,
+  CheckCircle2,
   Eye,
   EyeOff
 } from 'lucide-react';
-import firstLoveLogo from '../assets/img/first_love_logo.png';
 
-const ADMIN_PASSCODE_KEY = 'storehub_admin_passcode';
-const ADMIN_AUTH_SESSION_KEY = 'storehub_admin_auth_token';
+const ADMIN_PASSCODE_KEY = 'fl_inventory_admin_passcode';
+const ADMIN_AUTH_SESSION_KEY = 'fl_inventory_admin_auth_token';
 const DEFAULT_PASSCODE = '2026'; // Default storeroom manager PIN
 
 export const AdminAuthModal = ({ isOpen, onClose, onSuccess }) => {
@@ -79,12 +80,19 @@ export const AdminAuthModal = ({ isOpen, onClose, onSuccess }) => {
         style={{ maxWidth: '440px', background: '#0d0d0d', border: '1px solid #dc2626' }}
       >
         <div className="modal-header" style={{ borderBottom: '1px solid #222' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
-            <img
-              src={firstLoveLogo}
-              alt="First Love Church"
-              style={{ width: 40, height: 40, objectFit: 'contain' }}
-            />
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{
+              width: 32,
+              height: 32,
+              borderRadius: '8px',
+              background: '#1a1a1a',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: '#dc2626'
+            }}>
+              <ShieldCheck size={18} />
+            </div>
             <div>
               <h3 style={{ fontSize: '1.05rem', fontWeight: 800 }}>Admin Security Clearance</h3>
               <span style={{ fontSize: '0.72rem', color: '#888' }}>Authorized Custodian Access Only</span>
@@ -213,5 +221,5 @@ export const checkIsAdminAuthenticated = () => {
 export const logoutAdminSession = () => {
   try {
     sessionStorage.removeItem(ADMIN_AUTH_SESSION_KEY);
-  } catch (e) {}
+  } catch (e) { }
 };

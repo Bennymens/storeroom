@@ -36,7 +36,7 @@ export const RequisitionVoucherModal = ({ isOpen, onClose, requisition }) => {
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
                 <img src={firstLoveLogo} alt="First Love Church" style={{ width: 48, height: 48, objectFit: 'contain' }} />
                 <h1 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#000' }}>
-                  STOREHUB INVENTORY SYSTEM
+                  FL INVENTORY SYSTEM
                 </h1>
               </div>
               <p style={{ fontSize: '0.78rem', color: '#444', fontWeight: 600 }}>

@@ -28,7 +28,7 @@ export const SidebarUser = ({ userTab, setUserTab, isOpen, onClose }) => {
               <img src={firstLoveLogo} alt="First Love Church" style={{ width: 38, height: 38, objectFit: 'contain' }} />
             </div>
             <div className="sidebar-brand-text">
-              <h2>StoreHub</h2>
+              <h2>FL Inventory</h2>
               <span>Storeroom Pickup</span>
             </div>
           </div>

@@ -19,7 +19,7 @@ export const NotificationDropdown = ({ isOpen, onClose, onNavigateTab }) => {
   const [filter, setFilter] = useState('ALL'); // 'ALL' | 'REQUESTS' | 'ALERTS'
   const [readIds, setReadIds] = useState(() => {
     try {
-      const saved = localStorage.getItem('storehub_read_notifications');
+      const saved = localStorage.getItem('fl_inventory_read_notifications') || localStorage.getItem('storehub_read_notifications');
       if (saved) return JSON.parse(saved);
     } catch (e) {}
     return [];
@@ -109,14 +109,14 @@ export const NotificationDropdown = ({ isOpen, onClose, onNavigateTab }) => {
   const handleMarkAllAsRead = () => {
     const allIds = notifications.map(n => n.id);
     setReadIds(allIds);
-    localStorage.setItem('storehub_read_notifications', JSON.stringify(allIds));
+    localStorage.setItem('fl_inventory_read_notifications', JSON.stringify(allIds));
   };
 
   const handleItemClick = (notif) => {
     if (!readIds.includes(notif.id)) {
       const updated = [...readIds, notif.id];
       setReadIds(updated);
-      localStorage.setItem('storehub_read_notifications', JSON.stringify(updated));
+      localStorage.setItem('fl_inventory_read_notifications', JSON.stringify(updated));
     }
     if (onNavigateTab && notif.actionTab) {
       onNavigateTab(notif.actionTab);

@@ -10,6 +10,15 @@ import {
 const InventoryContext = createContext();
 
 const STORAGE_KEYS = {
+  ITEMS: 'fl_inventory_items_v4',
+  CATEGORIES: 'fl_inventory_categories_v4',
+  REQUISITIONS: 'fl_inventory_requisitions_v4',
+  MOVEMENTS: 'fl_inventory_movements_v4',
+  CART: 'fl_inventory_req_cart_v4',
+  STOREROOM: 'fl_inventory_active_storeroom_v4'
+};
+
+const LEGACY_STORAGE_KEYS = {
   ITEMS: 'storehub_items_v4',
   CATEGORIES: 'storehub_categories_v4',
   REQUISITIONS: 'storehub_requisitions_v4',
@@ -22,7 +31,7 @@ export const InventoryProvider = ({ children }) => {
   // 1. Items
   const [items, setItems] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.ITEMS);
+      const saved = localStorage.getItem(STORAGE_KEYS.ITEMS) || localStorage.getItem(LEGACY_STORAGE_KEYS.ITEMS);
       if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error('Failed to load items from storage:', e);
@@ -33,7 +42,7 @@ export const InventoryProvider = ({ children }) => {
   // 2. Categories
   const [categories, setCategories] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.CATEGORIES);
+      const saved = localStorage.getItem(STORAGE_KEYS.CATEGORIES) || localStorage.getItem(LEGACY_STORAGE_KEYS.CATEGORIES);
       if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error('Failed to load categories:', e);
@@ -44,7 +53,7 @@ export const InventoryProvider = ({ children }) => {
   // 3. Requisitions
   const [requisitions, setRequisitions] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.REQUISITIONS);
+      const saved = localStorage.getItem(STORAGE_KEYS.REQUISITIONS) || localStorage.getItem(LEGACY_STORAGE_KEYS.REQUISITIONS);
       if (saved) {
         const parsed = JSON.parse(saved);
         return parsed.filter(r => r.id !== 'REQ-2026-001' && r.id !== 'REQ-2026-002');
@@ -58,7 +67,7 @@ export const InventoryProvider = ({ children }) => {
   // 4. Stock Movements & Audit Logs
   const [movements, setMovements] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.MOVEMENTS);
+      const saved = localStorage.getItem(STORAGE_KEYS.MOVEMENTS) || localStorage.getItem(LEGACY_STORAGE_KEYS.MOVEMENTS);
       if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error('Failed to load movements:', e);
@@ -69,7 +78,7 @@ export const InventoryProvider = ({ children }) => {
   // 5. Requisition Cart Drawer State
   const [cart, setCart] = useState(() => {
     try {
-      const saved = localStorage.getItem(STORAGE_KEYS.CART);
+      const saved = localStorage.getItem(STORAGE_KEYS.CART) || localStorage.getItem(LEGACY_STORAGE_KEYS.CART);
       if (saved) return JSON.parse(saved);
     } catch (e) {
       console.error('Failed to load cart:', e);
@@ -80,7 +89,7 @@ export const InventoryProvider = ({ children }) => {
   // 6. Active Filtered Storeroom
   const [activeStoreroomId, setActiveStoreroomId] = useState(() => {
     try {
-      return localStorage.getItem(STORAGE_KEYS.STOREROOM) || 'all';
+      return localStorage.getItem(STORAGE_KEYS.STOREROOM) || localStorage.getItem(LEGACY_STORAGE_KEYS.STOREROOM) || 'all';
     } catch (e) {
       return 'all';
     }

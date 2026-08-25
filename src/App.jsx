@@ -184,17 +184,17 @@ function MainApp() {
                         className="btn-ui btn-primary-ui"
                         onClick={() => {
                           const data = {
-                            items: JSON.parse(localStorage.getItem('storehub_items_v4') || '[]'),
-                            categories: JSON.parse(localStorage.getItem('storehub_categories_v4') || '[]'),
-                            requisitions: JSON.parse(localStorage.getItem('storehub_requisitions_v4') || '[]'),
-                            movements: JSON.parse(localStorage.getItem('storehub_movements_v4') || '[]'),
+                            items: JSON.parse(localStorage.getItem('fl_inventory_items_v4') || localStorage.getItem('storehub_items_v4') || '[]'),
+                            categories: JSON.parse(localStorage.getItem('fl_inventory_categories_v4') || localStorage.getItem('storehub_categories_v4') || '[]'),
+                            requisitions: JSON.parse(localStorage.getItem('fl_inventory_requisitions_v4') || localStorage.getItem('storehub_requisitions_v4') || '[]'),
+                            movements: JSON.parse(localStorage.getItem('fl_inventory_movements_v4') || localStorage.getItem('storehub_movements_v4') || '[]'),
                             exportedAt: new Date().toISOString()
                           };
                           const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
                           const url = URL.createObjectURL(blob);
                           const a = document.createElement('a');
                           a.href = url;
-                          a.download = `StoreHub_Backup_${new Date().toISOString().split('T')[0]}.json`;
+                          a.download = `FL_Inventory_Backup_${new Date().toISOString().split('T')[0]}.json`;
                           a.click();
                         }}
                       >
