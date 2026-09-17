@@ -138,15 +138,6 @@ export const AdminLoginScreen = ({ onLoginSuccess }) => {
         position: 'relative',
         overflow: 'hidden'
       }}>
-        {/* Subtle top accent bar */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '3px',
-          background: 'linear-gradient(90deg, #991b1b, #ef4444, #991b1b)'
-        }} />
 
         {/* Brand Header */}
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
@@ -188,7 +179,7 @@ export const AdminLoginScreen = ({ onLoginSuccess }) => {
             gap: '0.4rem'
           }}>
             <ShieldCheck size={16} style={{ color: '#ef4444' }} />
-            <span>Store Custodian Clearance Portal</span>
+            <span>Admin Portal</span>
           </p>
         </div>
 
@@ -391,7 +382,7 @@ export const AdminLoginScreen = ({ onLoginSuccess }) => {
               transition: 'all 0.2s ease'
             }}
           >
-            <span>Unlock Admin Session</span>
+            <span>Login</span>
             <ArrowRight size={18} />
           </button>
         </form>
