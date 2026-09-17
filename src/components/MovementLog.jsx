@@ -80,9 +80,9 @@ export const MovementLog = () => {
     <div className="content-panel">
       <div className="panel-header">
         <div>
-          <h3 className="panel-title">Stock Movements &amp; Audit Ledger</h3>
+          <h3 className="panel-title">Who Picked What &amp; Stock Movements</h3>
           <p style={{ fontSize: '0.82rem', color: '#71717a', marginTop: '0.15rem' }}>
-            Permanent record of who took what items, exact timestamps, and stock balance changes.
+            Complete history of who took each item, phone numbers, exact dates &amp; times, and updated stock balances.
           </p>
         </div>
 

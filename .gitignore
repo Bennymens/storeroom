@@ -22,3 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Admin manual (kept locally for administrator, not pushed to GitHub)
+ADMIN_MANUAL.md
+*MANUAL*.md

@@ -126,7 +126,7 @@ export const SidebarAdmin = ({ activeTab, setActiveTab, isOpen, onClose, onLogou
             onClick={() => handleNavClick('movements')}
           >
             <History size={18} />
-            <span>Audit Log</span>
+            <span>Who Picked What</span>
           </button>
 
           <button

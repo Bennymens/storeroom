@@ -281,88 +281,79 @@ export const InventoryOverview = ({ onSelectItem, onOpenAddItem, onOpenEditItem,
                       </span>
                     </td>
 
-                    {/* Actions (Matching Screenshot Pencil & ... Menu) */}
-                    <td style={{ textAlign: 'center', position: 'relative' }}>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {/* Actions: Direct Restock, Edit, Delete, and View buttons */}
+                    <td style={{ textAlign: 'center' }}>
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
                         <button
                           className="btn-ghost-ui"
-                          style={{ padding: '0.35rem', borderRadius: '50%' }}
-                          title="Edit Item"
+                          style={{
+                            padding: '0.4rem 0.55rem',
+                            borderRadius: '8px',
+                            background: '#151518',
+                            border: '1px solid #272730',
+                            color: '#34d399',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '0.3rem',
+                            fontSize: '0.75rem',
+                            fontWeight: 700
+                          }}
+                          title="Restock or Adjust quantity"
+                          onClick={() => onOpenAdjustModal(item)}
+                        >
+                          <SlidersHorizontal size={14} />
+                          <span>Restock</span>
+                        </button>
+
+                        <button
+                          className="btn-ghost-ui"
+                          style={{
+                            padding: '0.4rem 0.5rem',
+                            borderRadius: '8px',
+                            background: '#151518',
+                            border: '1px solid #272730',
+                            color: '#60a5fa'
+                          }}
+                          title="Edit Item details"
                           onClick={() => onOpenEditItem(item)}
                         >
-                          <Edit2 size={15} />
+                          <Edit2 size={14} />
                         </button>
 
                         <button
                           className="btn-ghost-ui"
-                          style={{ padding: '0.35rem', borderRadius: '50%' }}
-                          title="More Actions"
-                          onClick={() => setOpenDropdownId(openDropdownId === item.id ? null : item.id)}
+                          style={{
+                            padding: '0.4rem 0.5rem',
+                            borderRadius: '8px',
+                            background: '#151518',
+                            border: '1px solid #272730',
+                            color: '#f87171'
+                          }}
+                          title="Delete Item"
+                          onClick={() => {
+                            if (window.confirm(`Are you sure you want to delete "${item.name}"?`)) {
+                              deleteItem(item.id);
+                            }
+                          }}
                         >
-                          <MoreHorizontal size={16} />
+                          <Trash2 size={14} />
+                        </button>
+
+                        <button
+                          className="btn-ghost-ui"
+                          style={{
+                            padding: '0.4rem 0.5rem',
+                            borderRadius: '8px',
+                            background: '#151518',
+                            border: '1px solid #272730',
+                            color: '#a1a1aa'
+                          }}
+                          title="View Details"
+                          onClick={() => onSelectItem(item)}
+                        >
+                          <Eye size={14} />
                         </button>
                       </div>
-
-                      {/* Popover Action Menu */}
-                      {openDropdownId === item.id && (
-                        <>
-                          <div
-                            style={{ position: 'fixed', inset: 0, zIndex: 60 }}
-                            onClick={() => setOpenDropdownId(null)}
-                          />
-                          <div style={{
-                            position: 'absolute',
-                            right: '10px',
-                            top: '40px',
-                            background: '#18181c',
-                            border: '1px solid #272730',
-                            borderRadius: '12px',
-                            boxShadow: '0 10px 30px rgba(0,0,0,0.85)',
-                            padding: '0.4rem',
-                            zIndex: 70,
-                            minWidth: '150px',
-                            textAlign: 'left'
-                          }}>
-                            <button
-                              className="nav-item"
-                              style={{ padding: '0.45rem 0.75rem', fontSize: '0.8rem', borderRadius: '8px' }}
-                              onClick={() => {
-                                setOpenDropdownId(null);
-                                onSelectItem(item);
-                              }}
-                            >
-                              <Eye size={14} />
-                              <span>View Details</span>
-                            </button>
-
-                            <button
-                              className="nav-item"
-                              style={{ padding: '0.45rem 0.75rem', fontSize: '0.8rem', borderRadius: '8px' }}
-                              onClick={() => {
-                                setOpenDropdownId(null);
-                                onOpenAdjustModal(item);
-                              }}
-                            >
-                              <SlidersHorizontal size={14} />
-                              <span>Adjust Stock</span>
-                            </button>
-
-                            <button
-                              className="nav-item"
-                              style={{ padding: '0.45rem 0.75rem', fontSize: '0.8rem', borderRadius: '8px', color: '#f87171' }}
-                              onClick={() => {
-                                setOpenDropdownId(null);
-                                if (window.confirm(`Delete "${item.name}" from inventory?`)) {
-                                  deleteItem(item.id);
-                                }
-                              }}
-                            >
-                              <Trash2 size={14} />
-                              <span>Delete Item</span>
-                            </button>
-                          </div>
-                        </>
-                      )}
                     </td>
                   </tr>
                 );

@@ -159,6 +159,29 @@ export const InventoryProvider = ({ children }) => {
     }
   }, [activeStoreroomId]);
 
+  // Real-time synchronization across browser tabs (e.g. /admin and / main page)
+  useEffect(() => {
+    const handleStorageChange = (e) => {
+      if (!e.key) return;
+      try {
+        if (e.key === STORAGE_KEYS.ITEMS && e.newValue) {
+          setItems(JSON.parse(e.newValue));
+        } else if (e.key === STORAGE_KEYS.REQUISITIONS && e.newValue) {
+          setRequisitions(JSON.parse(e.newValue));
+        } else if (e.key === STORAGE_KEYS.MOVEMENTS && e.newValue) {
+          setMovements(JSON.parse(e.newValue));
+        } else if (e.key === STORAGE_KEYS.CATEGORIES && e.newValue) {
+          setCategories(JSON.parse(e.newValue));
+        }
+      } catch (err) {
+        console.error('Storage sync error:', err);
+      }
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, []);
+
   // Helper to compute item stock status
   const calculateStatus = (qty, threshold) => {
     if (qty <= 0) return 'Out of Stock';
