@@ -15,6 +15,11 @@ import { StockAdjustModal } from './components/StockAdjustModal';
 import { RequisitionCartDrawer } from './components/RequisitionCartDrawer';
 import { RequisitionVoucherModal } from './components/RequisitionVoucherModal';
 import { ToastContainer } from './components/ToastContainer';
+import {
+  AdminLoginScreen,
+  checkIsAdminAuthenticated,
+  logoutAdminSession
+} from './components/AdminLoginScreen';
 
 function MainApp() {
   // App Mode based on URL: 'user' for '/' vs 'admin' for '/admin'
@@ -46,6 +51,38 @@ function MainApp() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [activeVoucher, setActiveVoucher] = useState(null);
 
+  // Admin Authentication State
+  const [isAdminAuthenticated, setIsAdminAuthenticated] = useState(() => checkIsAdminAuthenticated());
+
+  const handleAdminLogout = () => {
+    logoutAdminSession();
+    setIsAdminAuthenticated(false);
+  };
+
+  // Inactivity auto-logout (30 minutes of idle time)
+  useEffect(() => {
+    if (!isAdminAuthenticated || appMode !== 'admin') return;
+
+    const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes
+    let timeoutId;
+
+    const resetTimer = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        handleAdminLogout();
+      }, INACTIVITY_TIMEOUT);
+    };
+
+    const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    events.forEach(event => window.addEventListener(event, resetTimer));
+    resetTimer();
+
+    return () => {
+      clearTimeout(timeoutId);
+      events.forEach(event => window.removeEventListener(event, resetTimer));
+    };
+  }, [isAdminAuthenticated, appMode]);
+
   // Sync with URL
   useEffect(() => {
     const handleUrlChange = () => {
@@ -53,6 +90,7 @@ function MainApp() {
       const hash = window.location.hash.toLowerCase();
       if (path.includes('/admin') || hash.includes('/admin')) {
         setAppMode('admin');
+        setIsAdminAuthenticated(checkIsAdminAuthenticated());
       } else {
         setAppMode('user');
       }
@@ -87,6 +125,16 @@ function MainApp() {
     }
   };
 
+  // If visiting /admin without authenticated session, show security login gate
+  if (appMode === 'admin' && !isAdminAuthenticated) {
+    return (
+      <>
+        <AdminLoginScreen onLoginSuccess={() => setIsAdminAuthenticated(true)} />
+        <ToastContainer />
+      </>
+    );
+  }
+
   return (
     <div className="app-wrapper">
       {/* Mobile Drawer Overlay Backdrop */}
@@ -110,6 +158,7 @@ function MainApp() {
             setActiveTab={setAdminTab}
             isOpen={isMobileMenuOpen}
             onClose={() => setIsMobileMenuOpen(false)}
+            onLogout={handleAdminLogout}
           />
         )}
 
@@ -123,6 +172,8 @@ function MainApp() {
               else if (tab === 'requisitions') setUserTab('status');
               else setUserTab('pickup');
             }}
+            isAdmin={appMode === 'admin'}
+            onLogout={handleAdminLogout}
           />
 
           <div className="view-content">

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Bell, Menu } from 'lucide-react';
+import { Bell, Menu, LogOut } from 'lucide-react';
 import { useInventory } from '../context/InventoryContext';
 import { NotificationDropdown } from './NotificationDropdown';
 
-export const TopHeader = ({ title = 'Inventory Management', onNavigateTab, onToggleMobileMenu }) => {
+export const TopHeader = ({ title = 'Inventory Management', onNavigateTab, onToggleMobileMenu, isAdmin, onLogout }) => {
   const { items, requisitions } = useInventory();
   const [isNotifOpen, setIsNotifOpen] = useState(false);
 
@@ -27,8 +27,8 @@ export const TopHeader = ({ title = 'Inventory Management', onNavigateTab, onTog
         <p>Today, {today}</p>
       </div>
 
-      {/* Right Header Actions: Notification Bell + Hamburger Menu */}
-      <div className="header-actions">
+      {/* Right Header Actions: Notification Bell + Sign Out (if admin) + Hamburger Menu */}
+      <div className="header-actions" style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
         {/* Bell Notification Button */}
         <button
           className="bell-btn"
@@ -42,6 +42,22 @@ export const TopHeader = ({ title = 'Inventory Management', onNavigateTab, onTog
           <Bell size={18} style={{ color: isNotifOpen ? '#ffffff' : '#a1a1aa' }} />
           {totalAlertCount > 0 && <span className="bell-dot" />}
         </button>
+
+        {/* Admin Sign Out Button */}
+        {isAdmin && onLogout && (
+          <button
+            className="bell-btn"
+            title="Lock Session / Log Out"
+            onClick={onLogout}
+            style={{
+              borderColor: '#3f1818',
+              background: '#1c1417',
+              color: '#f87171'
+            }}
+          >
+            <LogOut size={17} />
+          </button>
+        )}
 
         {/* Hamburger Toggle Button (Beside notification bell on the right) */}
         <button

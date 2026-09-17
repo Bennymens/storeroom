@@ -10,12 +10,13 @@ import {
   Download,
   Upload,
   RotateCcw,
-  X
+  X,
+  LogOut
 } from 'lucide-react';
 import { useInventory } from '../context/InventoryContext';
 import firstLoveLogo from '../assets/img/first_love_logo.png';
 
-export const SidebarAdmin = ({ activeTab, setActiveTab, isOpen, onClose }) => {
+export const SidebarAdmin = ({ activeTab, setActiveTab, isOpen, onClose, onLogout }) => {
   const { requisitions, resetToDefaultData, importBackupData, addToast } = useInventory();
   const pendingCount = requisitions.filter(r => r.status === 'Pending').length;
 
@@ -179,6 +180,35 @@ export const SidebarAdmin = ({ activeTab, setActiveTab, isOpen, onClose }) => {
               Admin Session
             </div>
           </div>
+          {onLogout && (
+            <button
+              type="button"
+              onClick={onLogout}
+              title="Sign Out of Admin Session"
+              style={{
+                background: '#19181c',
+                border: '1px solid #2e2830',
+                borderRadius: '8px',
+                padding: '6px 8px',
+                color: '#f87171',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                transition: 'all 0.15s'
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.background = 'rgba(239, 68, 68, 0.18)';
+                e.currentTarget.style.borderColor = '#dc2626';
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.background = '#19181c';
+                e.currentTarget.style.borderColor = '#2e2830';
+              }}
+            >
+              <LogOut size={16} />
+            </button>
+          )}
         </div>
       </div>
     </aside>
